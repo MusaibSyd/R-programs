@@ -1,0 +1,115 @@
+---
+title: "Homework 5 - Diabetes Data Analysis"
+author: "Musaib Syed"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## **Introduction**
+
+Diabetes is a global health concern, and understanding its patterns is crucial. In this report, I'll analyze a real-world **Healthcare Diabetes dataset** to identify trends and correlations between patient characteristics and diabetes status.
+
+I will:
+- **Summarize key variables** from the dataset.
+- **Create effective visualizations** using `ggplot2`.
+- **Apply best practices in data visualization**.
+
+---
+
+## **Load Required Packages**
+```{r setup, include=FALSE}
+library(ggplot2)
+library(dplyr)
+library(readr)
+```
+
+---
+
+## **Load and Explore the Diabetes Dataset**
+
+```{r}
+# Load dataset from uploaded file
+clinical_data <- read_csv("Healthcare-Diabetes.csv")
+
+colnames(clinical_data)
+# Display first few rows
+head(clinical_data)
+```
+
+---
+
+## **Summary of Diabetes Patients**
+
+I have analyze the distribution of **patients with and without diabetes**.
+
+```{r}
+clinical_data %>%
+  group_by(Outcome) %>%
+  summarise(count = n()) %>%
+  arrange(desc(count))
+```
+
+---
+
+## **Data Visualization: Blood Glucose Levels and Diabetes**
+
+### **Objective:**
+- Show the relationship between **blood glucose levels** and **diabetes diagnosis**.
+- Use **density plots** for better visualization.
+
+```{r}
+ggplot(clinical_data, aes(x = Glucose, y = BloodPressure, color = factor(Outcome))) +
+  geom_point(alpha = 0.7) +
+  labs(
+    title = "Blood Glucose vs Blood Pressure (Colored by Diabetes Status)",
+    x = "Blood Glucose Level",
+    y = "Blood Pressure",
+    color = "Diabetes (0 = No, 1 = Yes)"
+  ) +
+  theme_minimal()
+```
+
+---
+
+## **Plot Explanation**
+
+### **What the Plot Shows:**
+--**Non-diabetic patients (Outcome = 0) are more evenly spread across different blood glucose levels.**
+**Diabetic patients (Outcome = 1) are clustered in the high glucose range, indicating a strong association between high blood glucose and diabetes.**
+**There is some overlap in BP values between the two groups, but diabetic patients tend to have higher median BP levels.**
+
+### **Visualization Best Practices Applied:**
+✔ **Applied transparency (`alpha = 0.7`)** to avoid overplotting.  
+✔ **Clear labels and title** (`labs()`).  
+✔ **Minimalist theme** (`theme_minimal()`) to enhance readability.  
+✔ **Color coding by diabetes status** to differentiate groups.  
+
+---
+
+## **Conclusion**
+
+This analysis shows a strong relationship between **blood glucose levels and diabetes diagnosis**. Future analysis can:
+- Explore **other factors influencing diabetes** (e.g., age, BMI, blood pressure).
+- Use **machine learning models** to predict diabetes risk.
+- Analyze **treatment effectiveness** based on patient history.
+
+# Peer review comments
+
+### 1) Monica Hruzd
+
+I really liked how clearly explained the data and your plots. The six box plots and the spaghetti plots were all easy to understand.
+
+### 2) Marissa Schroeter
+
+Great presentation! I really appreciate the detailed explanation of both the code and the area of study. Your use of volcano plots effectively highlights changes in gene expression across different stages, making it easier to track differential expression over time
+
+### 3) Brian Nyiro
+
+Great visualization! The PCA plot clearly demonstrates the segregation between TB and LTBI individuals, highlighting distinct gene expression patterns. This is a valuable approach for identifying potential biomarkers. Well done!
+
+### 4) Anoushka Basu
+Great use of GGplot to visualize the relationship between high cholesterol and heart disease! The graphical representation helps in understanding trends and correlations effectively. Well done!
+
+### 5) Daniel Mayer
+
+Great use of GGplot to visualize sleep pattern data! The plots effectively highlight trends and variations, making it easier to interpret sleep behavior. Well done!
