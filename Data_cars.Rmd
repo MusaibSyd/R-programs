@@ -1,0 +1,93 @@
+---
+title: "Data Visualization Report"
+author: "Musaib Syed"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## **Introduction**
+
+This report explores a dataset using **ggplot2** for data visualization. The dataset used in this example is `mtcars`, a built-in dataset in R that contains information about different car models.
+
+---
+
+## **Load Required Packages**
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+---
+
+## **Load and Explore the Dataset**
+
+```{r}
+data(mtcars) # Load dataset
+head(mtcars) # Display first few rows
+```
+
+### **Summary Statistics**
+
+```{r}
+summary(mtcars)
+```
+
+The dataset contains multiple numerical variables describing various car features, such as **miles per gallon (mpg)**, **horsepower (hp)**, **weight (wt)**, and **number of cylinders (cyl)**.
+
+---
+
+## **Data Visualization: MPG vs Horsepower with Cylinder Categories**
+
+### **Objective:**
+- **Compare miles per gallon (MPG) against horsepower (HP).**
+- **Color points by number of cylinders (`cyl`).**
+- **Size of points represents weight (`wt`).**
+- **Trend line added for better readability.**
+
+```{r}
+
+ggplot(mtcars, aes(x = hp, y = mpg, color = factor(cyl))) +
+  geom_point(aes(size = wt), alpha = 0.7) +  # Apply size only to points
+  geom_smooth(aes(group = factor(cyl)), method = "lm", se = FALSE, linetype = "dashed", color = "black", linewidth = 1) +  # Fix group issue
+  labs(
+    title = "Miles Per Gallon vs Horsepower",
+    subtitle = "Data grouped by Number of Cylinders",
+    x = "Horsepower (hp)",
+    y = "Miles Per Gallon (mpg)",
+    color = "Cylinders",
+    size = "Weight (wt)"
+  ) +
+  theme_minimal() +  # Clean theme
+  scale_color_manual(values = c("red", "blue", "green"))  # Custom color scheme
+
+
+```
+
+---
+
+## **Plot Explanation**
+
+### **What the Plot Shows:**
+- **MPG decreases as horsepower increases.**
+- **Cars with fewer cylinders (4-cyl) tend to have higher MPG.**
+- **Heavier cars (larger points) are generally less fuel-efficient.**
+- **A trend line (`geom_smooth()`) confirms a negative correlation between MPG and HP.**
+
+### **Visualization Best Practices Applied:**
+✔ **Color coding** (`color=factor(cyl)`) to differentiate cylinder categories.  
+✔ **Size encoding** (`size=wt`) to represent weight visually.  
+✔ **Added a trend line** (`geom_smooth(method="lm")`) for clarity.  
+✔ **Clear labels and title** (`labs()`).  
+✔ **Minimalist theme** (`theme_minimal()`) to reduce clutter.  
+✔ **Custom colors** (`scale_color_manual()`) to enhance readability.  
+
+---
+
+## **Conclusion**
+
+This visualization effectively highlights how **MPG decreases with higher horsepower** and how **cylinder count and weight** affect fuel efficiency.
+
+To **render** this file, save it as `.Rmd` and use **Knit** in RStudio to generate an HTML report.
+
+
